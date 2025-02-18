@@ -1,7 +1,7 @@
-const natural = require("natural"); // NLP processing library
-const Sentiment = require("sentiment");
-const facialRecognition = require("../utils/facialRecognition"); // Custom facial analysis module
-const voiceEmotion = require("../utils/voiceEmotion"); // Custom voice emotion analysis module
+import natural from "natural"; // NLP processing library
+import Sentiment from "sentiment";
+import { detectEmotion } from "../utils/facialRecognition"; // Custom facial analysis module
+import { detectEmotion as _detectEmotion } from "../utils/voiceEmotion"; // Custom voice emotion analysis module
 
 const sentimentAnalyzer = new Sentiment();
 
@@ -31,7 +31,7 @@ const analyzeTextEmotion = (text) => {
  */
 const analyzeVoiceEmotion = async (audioFilePath) => {
   try {
-    const result = await voiceEmotion.detectEmotion(audioFilePath);
+    const result = await _detectEmotion(audioFilePath);
     return result;
   } catch (error) {
     console.error("Voice Emotion Analysis Error:", error);
@@ -46,7 +46,7 @@ const analyzeVoiceEmotion = async (audioFilePath) => {
  */
 const analyzeFacialEmotion = async (imageFilePath) => {
   try {
-    const result = await facialRecognition.detectEmotion(imageFilePath);
+    const result = await detectEmotion(imageFilePath);
     return result;
   } catch (error) {
     console.error("Facial Emotion Analysis Error:", error);
@@ -83,7 +83,7 @@ const analyzeEmotion = async (data) => {
   return { emotion: dominantEmotion, confidence: emotionScores[dominantEmotion] / results.length };
 };
 
-module.exports = {
+export default {
   analyzeTextEmotion,
   analyzeVoiceEmotion,
   analyzeFacialEmotion,
